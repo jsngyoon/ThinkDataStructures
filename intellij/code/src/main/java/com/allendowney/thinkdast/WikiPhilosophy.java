@@ -41,5 +41,29 @@ public class WikiPhilosophy {
      */
     public static void testConjecture(String destination, String source, int limit) throws IOException {
         // TODO: FILL THIS IN!
+        String url = source;
+        for (int i=0; i<limit; ++i) {
+            System.out.println((i+1) + ") "+"Moving to " + url);
+            Elements paragraphs = wf.fetchWikipedia(url);
+            WikiParser parser = new WikiParser(paragraphs);
+            Element firstLink = parser.findFirstLink();
+            if (firstLink == null) {
+                System.out.println("No Link found... Exiting.");
+                return;
+            }
+            System.out.println(">>> " + firstLink.text());
+            url = firstLink.attr("abs:href");
+
+            if (visited.contains(url)) {
+                System.out.println("Loop detected...");
+                return;
+            }
+            else if (url.equals(destination)) {
+                System.out.println("Success!!! Got to phylosophy.");
+                return;
+            }
+            visited.add(url);
+
+        }
     }
 }
