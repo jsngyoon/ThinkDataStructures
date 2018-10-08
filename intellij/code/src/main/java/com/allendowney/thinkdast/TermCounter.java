@@ -37,7 +37,12 @@ public class TermCounter {
 	 */
 	public int size() {
 		// TODO: FILL THIS IN!
-		return 0;
+   		Integer sum = 0;
+		for (String key : keySet()) {
+			Integer count = get(key);
+			sum += count;
+		}
+		return sum;
 	}
 
 	/**
