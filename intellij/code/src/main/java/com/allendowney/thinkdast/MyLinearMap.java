@@ -64,23 +64,6 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	 */
 	private Entry findEntry(Object target) {
 		// TODO: FILL THIS IN!
-		
-	public void clear() {
-		entries.clear();
-	}
-
-	@Override
-	public boolean containsKey(Object target) {
-		return findEntry(target) != null;
-	}
-
-	/**
-	 * Returns the entry that contains the target key, or null if there is none.
-	 *
-	 * @param target
-	 */
-	private Entry findEntry(Object target) {
-		// TODO: FILL THIS IN!
 		for (Entry entry : entries) {
 			if (equals(target, entry.getKey())) return entry;
 		}
@@ -113,7 +96,10 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public Set<Map.Entry<K, V>> entrySet() {
-		throw new UnsupportedOperationException();
+		Set<Map.Entry<K, V>> set = new HashSet<Map.Entry<K, V>>();
+		for (Entry entry : entries) set.add(entry);
+		return set;
+		//throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -141,7 +127,15 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	@Override
 	public V put(K key, V value) {
 		// TODO: FILL THIS IN!
-		return null;
+		Entry entry = findEntry(key);
+		if (entry == null) {
+			entry = new Entry(key, value);
+			entries.add(entry);
+			return null;
+		}
+		V oldValue = entry.getValue();
+		entry.setValue(value);
+		return oldValue;
 	}
 
 	@Override
@@ -154,7 +148,11 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	@Override
 	public V remove(Object key) {
 		// TODO: FILL THIS IN!
-		return null;
+		Entry entry = findEntry(key);
+		if (entry == null) return null;
+		V oldValue = entry.getValue();
+		entries.remove(entry);
+		return oldValue;
 	}
 
 	@Override
