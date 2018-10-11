@@ -117,6 +117,13 @@ public class JedisIndex {
 	 */
 	public void indexPage(String url, Elements paragraphs) {
 		// TODO: FILL THIS IN!
+		TermCounter tc = new TermCounter(url);
+		tc.processElements(paragraphs);
+		Set<String> set = tc.keySet();
+		for (String term : set) {
+			add(term, tc);
+		}
+
 	}
 
 	/**
