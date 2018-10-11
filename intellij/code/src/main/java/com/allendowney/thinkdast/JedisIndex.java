@@ -78,7 +78,7 @@ public class JedisIndex {
 	 */
 	public Set<String> getURLs(String term) {
         // FILL THIS IN!
-		return null;
+		return jedis.smembers(urlSetKey(term));
 	}
 
     /**
@@ -89,7 +89,12 @@ public class JedisIndex {
 	 */
 	public Map<String, Integer> getCounts(String term) {
         // FILL THIS IN!
-		return null;
+		Set<String> urls = getURLs(term);
+		Map<String, Integer> map = new HashMap<>();
+		for (String url : urls) {
+			map.put(url, getCount(url, term));
+		}
+		return map;
 	}
 
     /**
@@ -101,7 +106,7 @@ public class JedisIndex {
 	 */
 	public Integer getCount(String url, String term) {
         // FILL THIS IN!
-		return null;
+		return new Integer(jedis.hget(termCounterKey(url), term));
 	}
 
 	/**
