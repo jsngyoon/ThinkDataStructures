@@ -119,10 +119,13 @@ public class JedisIndex {
 		// TODO: FILL THIS IN!
 		TermCounter tc = new TermCounter(url);
 		tc.processElements(paragraphs);
-		Set<String> set = tc.keySet();
-		for (String term : set) {
-			add(term, tc);
+		Transaction t = jedis.multi();
+		t.del(termCounterKey(url));
+		for (String term : tc.keySet()) {
+			t.sadd(urlSetKey(term),url);
+			t.hset(termCounterKey(url), term, tc.get(term).toString());
 		}
+		t.exec();
 
 	}
 
@@ -246,7 +249,7 @@ public class JedisIndex {
 
 		//index.deleteTermCounters();
 		//index.deleteURLSets();
-		//index.deleteAllKeys();
+		index.deleteAllKeys();
 		loadIndex(index);
 
 		Map<String, Integer> map = index.getCounts("the");
